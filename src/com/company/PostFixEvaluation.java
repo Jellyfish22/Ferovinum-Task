@@ -21,7 +21,7 @@ public class PostFixEvaluation {
     private int rowCount = 0;
     private int maxColumns = 0;
 
-    private final String cellContainsDigitsCheck = "^[0-9]*$";
+    private final String cellContainsDigitsCheck = "^-?[0-9]+$";
     private final String cellContainsAlphabetLetterCheck = ".*[a-zA-Z].*";
     private final String cellContainsOperatorCheck = "\"[a-zA-Z]+";
 
@@ -171,11 +171,11 @@ public class PostFixEvaluation {
         resultKeys.sort(Comparator.comparing(String::length).thenComparing(Comparator.naturalOrder()));
         FileWriter writer = new FileWriter(location);
 
-        for(int i = 0; i < resultKeys.size() / maxColumnCount; i++){
-            for(int j = 0; j < maxColumnCount; j++){
-                writer.write(resultForCSV.get(resultKeys.get(i + j * maxColumnCount)));
-
-                if(j == maxColumnCount - 1){
+        for(int row = 0; row < rowCount; row++){
+            for(int column = 0; column < maxColumnCount; column++){
+                // Row-major order - https://en.wikipedia.org/wiki/Row-_and_column-major_order
+                writer.write(resultForCSV.get(resultKeys.get(rowCount * column + row)));
+                if(column == maxColumnCount - 1){
                     writer.write("\n");
                 } else {
                     writer.write(",");
