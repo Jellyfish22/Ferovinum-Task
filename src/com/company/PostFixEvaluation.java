@@ -12,7 +12,7 @@ public class PostFixEvaluation {
     private final static char MULTIPLY = '*';
     private final static char DIVIDE = '/';
 
-    private final static String ERROR_MESSAGE =  "#ERR!";
+    private final static String ERROR_MESSAGE =  "#ERR";
 
     private final Map<String, String> resultsMap = new HashMap<>();
     private final List<String> fixedCells = new ArrayList<>();
@@ -25,7 +25,7 @@ public class PostFixEvaluation {
     private final String cellContainsAlphabetLetterCheck = ".*[a-zA-Z].*";
     private final String cellContainsOperatorCheck = "\"[a-zA-Z]+";
 
-    private final DecimalFormat df = new DecimalFormat("###.#");
+    private final DecimalFormat df = new DecimalFormat("0.##########"); // 10 precision - not pretty
 
     public void evaluate(String inputFile) throws Exception {
         Scanner sc = new Scanner(new File(inputFile));
@@ -114,7 +114,7 @@ public class PostFixEvaluation {
                 // row/col lookup i.e. 'a0'
                 // Check if it exists as it may reference something ahead in the list
                 String value = resultsMap.get(currSymbol);
-                if (!value.equals(ERROR_MESSAGE)) {
+                if (value != null && !value.equals(ERROR_MESSAGE)) {
                     queue.add(Double.parseDouble(value));
                 } else {
                     return;
